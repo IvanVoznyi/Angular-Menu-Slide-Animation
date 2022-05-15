@@ -1,0 +1,92 @@
+$bodyMargin: 8px;
+$menuSize: 40rem;
+
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - $bodyMargin * 2);
+}
+
+.menu {
+    position: relative;
+    width: $menuSize;
+    height: $menuSize;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    list-style: none;
+}
+
+ul {
+    li {
+        $size: calc($menuSize / 4);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: $size;
+        width: $size;
+        border: 1px solid;
+        border-radius: 50%;
+
+        img {
+            height: calc($size / 3);
+        }
+
+        &:hover {
+            background-color: grey;
+            transition: all 500ms;
+            cursor: pointer;
+
+            img {
+                filter: brightness(0) invert(1);
+            }
+        }
+    }
+}
+
+@keyframes opacity {
+    from {
+        opacity: 0
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+$items: 8;
+$rotate: 360deg;
+
+@for $index from 0 to $items {
+    li:nth-child(#{$index + 1}) {
+        position: absolute;
+        left: 0px;
+        transform: rotate(calc($rotate / $items * $index));
+        transform-origin: calc($menuSize / 2);
+        animation-duration: 1s;
+        animation-delay: calc(0.5s * $index);
+        animation-name: menuSlide-#{$index};
+        animation-fill-mode: backwards;
+
+        img {
+            transform: rotate(calc(#{$rotate} / #{-$items} * #{$index}));
+        }
+    }
+}
+
+@for $index from 0 to $items {
+    $angle: calc($rotate / $items * $index);
+    @keyframes menuSlide-#{$index} {
+        from {
+            transform: rotate($angle) translateX(15rem);
+            opacity: 0;
+        }
+
+        to {
+            transform: rotate($angle) translateX(0);
+            opacity: 1;
+        }
+    }
+}
